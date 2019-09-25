@@ -1,4 +1,4 @@
-$HOSTNAME = "Win-@@{calm_unique}@@"
+$HOSTNAME = "@@{HOST_NAME}@@"
 
 function Set-Hostname{
   [CmdletBinding()]
@@ -44,7 +44,7 @@ if ($HOSTNAME -ne $Null){
   Set-Hostname -Hostname $HOSTNAME
 }
 
-add-computer -DomainName "@@{DOMAIN}@@" -OUPath "OU=Servers,DC=gso,DC=lab" -Username "@@{DOMAIN_CRED.username}@@" -Password "@@{DOMAIN_CRED.secret}@@"
+add-computer -DomainName "@@{DOMAIN}@@" -OUPath "OU=Servers,DC=subzero,DC=com" -Username "@@{DOMAIN_ADMIN_CRED.username}@@" -Password "@@{DOMAIN_ADMIN_CRED.secret}@@"
 
 Restart-Computer -Force -AsJob
 exit 0
