@@ -1,0 +1,1 @@
+Rename-Computer -ComputerName "OldHostName" -NewName "NewHostName" -DomainCredential DOMAIN\USERNAME -Force -Restart
