@@ -1,0 +1,1 @@
+Get-WindowsOptionalFeature -Online | where {$_.state -eq "Enabled"} | ft -Property featurename
