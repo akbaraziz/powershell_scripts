@@ -54,7 +54,7 @@ Enable-WindowsOptionalFeature -Online -FeatureName IIS-ManagementService
 
 Enable-WindowsOptionalFeature -Online -FeatureName IIS-ASPNET45
 
-Add-LocalGroupMember -Group "Administrators" -Member "SUBZEROCOM\Domain Admins", "SUBZEROCOM\SEC_Dot Net Development Team","SEC_Workstation Local Admin"
+Add-LocalGroupMember -Group "Administrators" -Member "CONTOSO\Domain Admins", "CONTOSO\SEC_Dot Net Development Team","SEC_Workstation Local Admin"
 
 # Install UrlRewrite Module for Extensionless Urls (optional)
 choco install urlrewrite -y
