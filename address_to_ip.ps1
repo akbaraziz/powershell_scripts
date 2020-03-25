@@ -1,0 +1,1 @@
+[System.Net.Dns]::GetHostbyAddress(“207.46.198.30”)
