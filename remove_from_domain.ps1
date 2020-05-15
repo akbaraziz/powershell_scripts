@@ -1,26 +1,7 @@
-$HOSTNAME = "Win-@@{calm_unique}@@"
-
-function RemoveFromDomain {
-  [CmdletBinding()]
-  Param(
-      [parameter(Mandatory=$true)]
-      [string]$DomainName,
-      [parameter(Mandatory=$false)]
-      [string]$OU,
-      [parameter(Mandatory=$true)]
-      [string]$Username,
-      [parameter(Mandatory=$true)]
-      [string]$Password,
-  )
-  $adapter = Get-NetAdapter | ? {$_.Status -eq "up"}
-  $adapter | Set-DnsClientServerAddress -ServerAddresses $Server
-
-  $adminname = "$DomainName\$Username"
-  $adminpassword = ConvertTo-SecureString -asPlainText -Force -String "$Password"
-  Write-Host "$adminname , $password"
-  $credential = New-Object System.Management.Automation.PSCredential($adminname,$adminpassword)
-  Remove-computer -UnjoinDomaincredential $credential -PassThru -Verbose -Force
-  Write-Host "Removed from domain @@{DOMAIN}@@"
-}
-
-RemoveFromDomain -DomainName "@@{DOMAIN}@@" -Username "@@{DOMAIN_CRED.username}@@" -Password "@@{DOMAIN_CRED.secret}@@"
+$dc = "@@{DOMAIN_NAME}@@" # Specify the domain to join.
+$pw = "password" | ConvertTo-SecureString -asPlainText –Force # Specify the password for the domain admin.
+$usr = "$dc\Administrator" # Specify the domain admin account.
+$creds = New-Object System.Management.Automation.PSCredential($usr,$pw)
+$ou = "OU=Servers,DC=contoso,DC=com" # Specify the OU to removed the system.
+$pc = "@@{HOST_NAME}@@" # Specify Computer Name
+Remove-Computer -ComputerName $pc -Credential $creds -OUPATH $ou -Force -Verbose -Restart # This will restart the computer
