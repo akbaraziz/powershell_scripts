@@ -1,1 +1,1 @@
-New-Item -ItemType directory -Path E:\SQL_Data
+New-Item -ItemType directory -Path "E:\Program Files\Microsoft SQL Server"
