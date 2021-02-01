@@ -1,3 +1,16 @@
+param($NodeToDelete= "")
+if($NodeToDelete-eq ""){
+    Write-Error "You need to specify a name to delete" -Category NotSpecified -CategoryReason "Need a name to delete" -CategoryTargetName "Missing parameter" -CategoryTargetType "DNS name"
+    return
+}
+
+$DNSServer = "dns01.rcmtech.co.uk"
+$ZoneName = "rcmtech.co.uk"
+$ReverseZoneName = "168.192.in-addr.arpa"
+$NodeARecord = $null
+$NodePTRRecord = $null
+
+
 Write-Host "Check for existing DNS record(s)"
 $NodeARecord = Get-DnsServerResourceRecord -ZoneName $ZoneName -ComputerName $DNSServer -Node $NodeToDelete -RRType A -ErrorAction SilentlyContinue
 if ($NodeARecord -eq $null) {
