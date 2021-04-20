@@ -1,5 +1,5 @@
 # Enable Windows Remote Desktop
-Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server' -name "fDenyTSConnections" -value 0
+Invoke-Command -Computername <computer name> -ScriptBlock {Set-ItemProperty -Path "HKLM:\System\CurrentControlSet\Control\Terminal Server" -Name "fDenyTSConnections" –Value 0 }
 
 # Add Firewall Rule
-Enable-NetFirewallRule -DisplayGroup "Remote Desktop"
+Invoke-Command -Computername <computer name> -ScriptBlock {Enable-NetFirewallRule -DisplayGroup "Remote Desktop"}

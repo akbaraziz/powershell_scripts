@@ -6,10 +6,9 @@ $parameters.uri = "https://" + $parameters.cluster_ip + ":9440/api/nutanix/v3/vm
 ###End of personalization section.
 
 ###Configure WinRM Service
-$certificate = 'New-SelfSignedCertificate -DnsName $env:computername -CertStoreLocation cert:\LocalMachine\My
-winrm create winrm/config/Listener?Address=*+Transport=HTTPS" '
-@{Hostname=`"$env:computername`";CertificateThumbprint=`"$($certificate.ThumbPrint)`"}"
-cmd /c winrm set winrm/config/service/auth @{Basic="true"}
+$certificate = 'New-SelfSignedCertificate -DnsName $env:computername -CertStoreLocation cert:\LocalMachine\My winrm create winrm/config/Listener?Address=*+Transport=HTTPS '
+@{Hostname = `"$env:computername`"; CertificateThumbprint = `"$($certificate.ThumbPrint)`" }"
+'cmd /c winrm set winrm/config/service/auth @{Basic="true"}'
 
 ###Setup Environment
 add-type @"
@@ -17,8 +16,8 @@ using System.Net;
 using System.Security.Cryptography.X509Certificates;
 public class TrustAllCertsPolicy : ICertificatePolicy {
     public bool CheckValidationResult(
-    ServicePoint srvPoint, X509Certificate certificate,
-    WebRequest request, int certificateProblem) {
+        ServicePoint srvPoint, X509Certificate certificate,
+        WebRequest request, int certificateProblem) {
         return true;
     }
 }
