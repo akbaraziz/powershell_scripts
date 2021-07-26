@@ -19,8 +19,8 @@ $inifile="$folderpath\ConfigurationFile.ini"
 # next line sets user as a SQL sysadmin
 $yourusername="windowsnoob\niall"
 # path to the SQL media
-$SQLsource="E:"
-$SQLInstallDrive = "D:"
+$SQLsource="D:"
+$SQLInstallDrive = "E:"
 # SQL memory
 $SqlMemMin = 8192
 $SqlMemMax = 8192
