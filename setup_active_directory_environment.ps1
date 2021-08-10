@@ -2,7 +2,7 @@
 # Script site: https://itpro.outsidesys.com/2015/12/13/lab-build-a-domain-controller-with-powershell/
 # Script date: 06/30/2020
 # Script ver: 1.0
-# Script tested on OS: Windows 2016 DataCenter Edition
+# Script tested on OS: Windows 2019 DataCenter Edition
 # Script purpose: Install AD, Promote to DC, Create OU, Create Users, Disable Admin Account
 
 
@@ -10,13 +10,13 @@
 
 # Setup the NIC, Rename the Computer, and Reboot
 # Define the Computer Name
-$computerName = "dc1"
+$computerName = "@@{HOST_NAME}@@"
 
 # Define the IPv4 Addressing
-$IPv4Address = "10.10.100.25"
-$IPv4Prefix = "24"
-$IPv4GW = "10.10.100.1"
-$IPv4DNS = "8.8.8.8"
+$IPv4Address = "@@{IP_ADDRESS}@@"
+$IPv4Prefix = "@@{NETMASK}@@"
+$IPv4GW = "@@{GATEWAY}@@"
+$IPv4DNS = "@@{DNS_1}@@"
 
 # Get the Network Adapter's Prefix
 $ipIF = (Get-NetAdapter).ifIndex
@@ -31,9 +31,9 @@ Restart-Computer
 
 
 # Install Active Directory Services and Promote to DC 
-$domainName  = "contoso.com"
-$netBIOSname = "CONTOSO"
-$mode  = "Win2016"
+$domainName  = "@@{DOMAIN_NAME}@@"
+$netBIOSname = "@@{DOMAIN}@@"
+$mode  = "Win2019"
 
 Install-WindowsFeature AD-Domain-Services -IncludeAllSubFeature -IncludeManagementTools
 
@@ -70,7 +70,7 @@ $timePeerList = "0.us.pool.ntp.org 1.us.pool.ntp.org"
 Add-DNSServerPrimaryZone -NetworkID $IPv4netID -ReplicationScope 'Forest' -DynamicUpdate 'Secure'
 
 # Make Changes to Sites & Services
-$defaultSite = Get-ADReplicationSite | Select DistinguishedName
+$defaultSite = Get-ADReplicationSite | Select-Object DistinguishedName
 Rename-ADObject $defaultSite.DistinguishedName -NewName $siteName
 New-ADReplicationSubnet -Name $IPv4netID -site $siteName -Location $location
 
@@ -98,8 +98,8 @@ New-ADOrganizationalUnit "Servers" -path $resourcesDN
 New-ADOrganizationalUnit "Users" -path $resourcesDN
 
 # Enable the Recycle Bin 
-$ForestFQDN = "contoso.com"
-$SchemaDC   = "dc1.contoso.com"
+$ForestFQDN = "@@{DOMAIN_NAME}@@"
+$SchemaDC   = "@@{HOST_NAME}@@.@@{DOMAIN_NAME}@@"
 
 Enable-ADOptionalFeature –Identity 'Recycle Bin Feature' –Scope ForestOrConfigurationSet –Target $ForestFQDN -Server $SchemaDC -confirm:$false
 
@@ -131,7 +131,7 @@ Add-ADGroupMember "Schema Admins" $userProperties.SamAccountName
 # Create a Non-Privileged User Account
 $userProperties = @{
 
-    Name                 = "John Dougherty"
+    Name                 = "@@{"
     GivenName            = "John"
     Surname              = "Dougherty"
     DisplayName          = "John Dougherty"
